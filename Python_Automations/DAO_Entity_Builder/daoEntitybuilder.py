@@ -8,35 +8,41 @@ def main():
     print('DAO Entity Builder:')
     javaEntityPath = pyperclip.paste()
 
-    JavaClassName = input('Enter the name of the Entity: ')
+    # Strip class name for new Ts file:
+    # ==========================================
+    #  remove all path params
+    filePath = javaEntityPath.split('\\')
+    tsfileName = filePath[len(filePath)-1]
 
-    startOfClass = javaEntityPath.find(JavaClassName.strip())
+    startOfClass = javaEntityPath.find(tsfileName.strip())
     #  strip the tail off of the abs path for directory change and reading of file
     workingDir = javaEntityPath[:startOfClass]
     os.chdir(workingDir)
+    # renames new file with typescript extenstion
+    tsfileName = tsfileName.strip("java") + "ts"
     # print(os.getcwd())
-    filename = javaEntityPath[startOfClass:]
-    print("opening: " + filename)
-    javafile = open(filename, "r")
+    javaFilename = javaEntityPath[startOfClass:]
+    print("opening: " + javaFilename)
+    javafile = open(javaFilename, "r")
     #  gets all of the files contents:
     contents = javafile.readlines()
 
-    javaFields = {}
+    javaFields = dict()
     for i in range(len(contents)):
         if "private" in contents[i]:
             variableList = contents[i].split()
             # data types are not in the dictionary:
-            if variableList[1] not in javaFields.keys():
-                #  add them
-                javaFields[variableList[1]] = variableList[2]
+            if variableList[1] in javaFields.keys():
+                #  add them to the running list
+                javaFields[variableList[1]].append(variableList[2])
             else:
-                javaFields[variableList[1]] = variableList[2]
+                javaFields[variableList[1]] = [variableList[2]]
+
     print(javaFields)
 
     # create the new file with the values from the dictionary
-    jsFilename = filename.split(".")
-
-    javaScriptfile = open()
+    # jsFilename = filename.split(".")
+    # javaScriptfile = open()
 
 
 main()
