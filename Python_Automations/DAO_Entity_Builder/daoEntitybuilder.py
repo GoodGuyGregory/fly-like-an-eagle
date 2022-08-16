@@ -46,14 +46,22 @@ def main():
 
     javaScriptfile = open(tsfileName, "w")
     classHeader = tsfileName.split(".")
-    javaScriptfile.write("public " + classHeader[0] + "{\n")
+    javaScriptfile.write("export public " + classHeader[0] + "{\n")
 
     # declare all variables from the dictionary to ts:
     for dataType in javaFields.keys():
         if dataType == 'String':
             for i in javaFields[dataType]:
                 tsAttribute = "public" + " " + i + ":" + " " + dataType.lower() + ";\n"
-                print(tsAttribute)
+                javaScriptfile.write(tsAttribute)
+        if dataType == 'Long' or dataType == 'Integer' or dataType == 'Double':
+            for i in javaFields[dataType]:
+                tsAttribute = "public" + " " + i + ":" + " " + "number;\n"
+                javaScriptfile.write(tsAttribute)
+        if dataType == 'Date':
+            for i in javaFields[dataType]:
+                tsAttribute = "public" + " " + i + ":" + " " + dataType + ";\n"
+                javaScriptfile.write(tsAttribute)
 
     javaScriptfile.write("}")
     javaScriptfile.close()
