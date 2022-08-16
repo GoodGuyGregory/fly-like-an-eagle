@@ -11,7 +11,7 @@ def main():
     # Strip class name for new Ts file:
     # ==========================================
     #  remove all path params
-    filePath = javaEntityPath.split('\\')
+    filePath = javaEntityPath.split('/')
     tsfileName = filePath[len(filePath)-1]
 
     startOfClass = javaEntityPath.find(tsfileName.strip())
@@ -34,15 +34,29 @@ def main():
             # data types are not in the dictionary:
             if variableList[1] in javaFields.keys():
                 #  add them to the running list
-                javaFields[variableList[1]].append(variableList[2])
+                javaFields[variableList[1]].append(
+                    str(variableList[2]).split(";")[0])
             else:
-                javaFields[variableList[1]] = [variableList[2]]
+                javaFields[variableList[1]] = [
+                    str(variableList[2].split(";")[0])]
 
     print(javaFields)
 
     # create the new file with the values from the dictionary
-    # jsFilename = filename.split(".")
-    # javaScriptfile = open()
+
+    javaScriptfile = open(tsfileName, "w")
+    classHeader = tsfileName.split(".")
+    javaScriptfile.write("public " + classHeader[0] + "{\n")
+
+    # declare all variables from the dictionary to ts:
+    for dataType in javaFields.keys():
+        if dataType == 'String':
+            for i in javaFields[dataType]:
+                tsAttribute = "public" + " " + i + ":" + " " + dataType.lower() + ";\n"
+                print(tsAttribute)
+
+    javaScriptfile.write("}")
+    javaScriptfile.close()
 
 
 main()
