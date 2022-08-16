@@ -46,7 +46,7 @@ def main():
 
     javaScriptfile = open(tsfileName, "w")
     classHeader = tsfileName.split(".")
-    javaScriptfile.write("export public " + classHeader[0] + "{\n")
+    javaScriptfile.write("export class public " + classHeader[0] + " {\n")
 
     # declare all variables from the dictionary to ts:
     for dataType in javaFields.keys():
