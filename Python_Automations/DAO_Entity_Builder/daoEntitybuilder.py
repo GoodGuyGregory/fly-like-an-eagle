@@ -11,7 +11,7 @@ def main():
     # Strip class name for new Ts file:
     # ==========================================
     #  remove all path params
-    filePath = javaEntityPath.split('/')
+    filePath = javaEntityPath.split('\\')
     tsfileName = filePath[len(filePath)-1]
 
     startOfClass = javaEntityPath.find(tsfileName.strip())
