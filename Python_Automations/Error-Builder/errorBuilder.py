@@ -16,13 +16,13 @@ def parseValidation():
     htmlFilePath = pyperclip.paste()
     os.chdir(os.path.dirname(htmlFilePath))
     htmlFile = open(htmlFilePath, "r+")
-    newDirectiveFile = open("directiveVersion.html","w")
+    newDirectiveFile = open("directiveVersion.html","a")
 
     # parse all lines for the "matInput" string
     contents = htmlFile.readlines()
-
+    i = 0
     for i in range(len(contents)):
-        if "matInput" in contents[i]:
+        if "matInput" in contents[i] and "</appInputTextValidator>" not in contents[i]:
             ngModelIndex = contents[i].find("[(ngModel)]=")
             if (ngModelIndex > 0):
                 tabIndex = getTab(contents[i])
@@ -38,14 +38,12 @@ def parseValidation():
                 
                 contents[i] = contents[i][:insertionIndex] + ngModelReference + contents[i][insertionIndex:] + tabIndex + "<mat-error class=\"error\" *ngIf=" + ngModelVariable + ".errors?.invalidInput\">" + " Input contains EDI characters. Please do not use *,$,',\", or ~ </mat-error>\n"
                 
-                newDirectiveFile.writelines(contents[i])
                 # add the ngModel name from the final part of the items in the "ngModel" section
-        else:
-            newDirectiveFile.writelines(contents[i])
+        newDirectiveFile.write(contents[i])
                 # add the class name for css styling
+        i += 1
     htmlFile.close()
     newDirectiveFile.close()
-        
         
 def main():
     parseValidation()
