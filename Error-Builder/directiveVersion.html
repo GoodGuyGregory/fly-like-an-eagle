@@ -1,0 +1,1180 @@
+<app-loading-indicator [loadedEntity]="item" message="Loading supplier details">
+	<ng-container *ngIf="item">
+		<h1>Supplier Details: {{ item.supplierCode ? item.supplierCode : item.supplierName }} - {{ item.supplierId }}</h1>
+		<form #editForm="ngForm" (ngSubmit)="save()">
+			<fieldset class="general">
+				<legend>General</legend>
+				<div class="field-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Supplier Name</mat-label>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Account Number</mat-label>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Address 1</mat-label>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Address 2</mat-label>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>City</mat-label>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>State/Province</mat-label>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Postal Code</mat-label>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Country</mat-label>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row" *ngIf="userPermissions">
+						<mat-form-field>
+							<mat-label>Supplier Rank</mat-label>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Supplier Alias</mat-label>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="contact">
+				<legend>Contact Information</legend>
+				<div class="field-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Name</mat-label>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Phone</mat-label>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Fax</mat-label>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Email</mat-label>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="notes">
+				<legend>Notes</legend>
+				<div class="form-row">
+					<mat-form-field appearance="outline">
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+					</mat-form-field>
+				</div>
+			</fieldset>
+			<fieldset class="operations">
+				<legend>Operations</legend>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Currency</mat-label>
+							<mat-select [(ngModel)]="item.currency" name="currency">
+								<mat-option *ngFor="let currency of currencyOptions" [value]="currency">{{ currency }}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Number of Decimals</mat-label>
+							<mat-select [(ngModel)]="item.decimals" name="decimals">
+								<mat-option [value]="4">4</mat-option>
+								<mat-option [value]="5">5</mat-option>
+								<mat-option [value]="6">6</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Days Late</mat-label>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row radio-group">
+						<label class="radio-label">Receiving Enabled: </label>
+						<mat-radio-group class="radio-buttons" [(ngModel)]="item.isReceiving" name="isReceiving" [disabled]="receivingOff()">
+							<mat-radio-button [value]="1" [checked]="item.isReceiving === 1">Yes</mat-radio-button>
+							<mat-radio-button [value]="0" [checked]="item.isReceiving === 0">No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row radio-group">
+						<label class="radio-label">Track QOH for Parts: </label>
+						<mat-radio-group class="radio-buttons" [(ngModel)]="item.isTrackQohVmiParts" name="isTrackQohVmiParts">
+							<mat-radio-button [value]="1" (change)="openDialog(noToYesQohTracking)" [checked]="item.isTrackQohVmiParts === 1">Yes</mat-radio-button>
+							<mat-radio-button [value]="0" (change)="openDialog(yesToNoQohTracking)" [checked]="item.isTrackQohVmiParts === 0">No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Order Qty is Not Multiple of MPQ</mat-label>
+							<mat-select [(ngModel)]="item.mpqRule" name="mpqRule">
+								<mat-option [value]="0">Ignore MPQ</mat-option>
+								<mat-option [value]="1">Round up to the nearest MPQ</mat-option>
+								<mat-option [value]="2">Round down to the nearest MPQ</mat-option>
+								<mat-option [value]="3">Prompt/Suspend</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Order Qty is Less than MOQ</mat-label>
+							<mat-select [(ngModel)]="item.moqRule" name="moqRule">
+								<mat-option [value]="0">Ignore MOQ</mat-option>
+								<mat-option [value]="1">Round up to MOQ</mat-option>
+								<mat-option [value]="2">Prompt/Suspend</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Receipt Qty is not Equal to Open Order Qty</mat-label>
+							<mat-select [(ngModel)]="item.recQtyWarning" name="recQtyWarning">
+								<mat-option [value]="0">Ignore Open Order Qty</mat-option>
+								<mat-option [value]="1">Prompt/Suspend if Receipt > Open</mat-option>
+								<mat-option [value]="2">Prompt/Suspend if Receipt <> Open</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="order-transaction">
+				<legend>
+					Order Transaction
+				</legend>
+				<div class="form-group" >
+					<div class="form-row order-edi-row"  style="margin: 15px">
+						<div class="form-row">
+							<section>
+								<mat-checkbox [disabled]="!userPermissions" [(ngModel)]="item.ediEnable" [checked]="item.ediEnable" (change)="$event ? enableEdi(item, $event) : null">Send Orders - EDI</mat-checkbox>
+							</section>
+							<mat-form-field>
+								<mat-label>EDI Map</mat-label>
+								<mat-select name="ediMap" [disabled]="!userPermissions" [(ngModel)]="item.ediMap" >
+									<mat-option value="NP850B">NP850B</mat-option>
+									<mat-option value="NP850QM">NP850QM</mat-option>
+									<mat-option value="NP850P4GM">850P4GM</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+					<div *ngFor="let supplierEmail of item.supplierEmails; index as i" class="form-row">
+						<div class="form-row email-row"  *ngIf="supplierEmail.transactionType === 'ORDERS'" style="margin: 15px">
+							<div class="form-row">
+								<section>
+									<mat-checkbox [checked]="supplierEmail.enabled" (change)="$event ? disableEmails(supplierEmail) : null" name="toggle-{{i}}" >Send Orders - {{supplierEmail.emailType}}</mat-checkbox>
+								</section>
+								<mat-form-field>
+									<mat-label>Email Recipients</mat-label>
+									<div class="invalid-email" *ngIf="(emailRecipientsNgModel.touched) && emailRecipientsNgModel.errors?.emailsInValid">enter a valid email separated by a comma</div>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+								</mat-form-field>
+								<mat-form-field>
+									<mat-label>Email Subject</mat-label>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<div class="form-row email-row"  style="margin: 15px">
+						<div class="form-row">
+							<section>
+								<mat-checkbox [checked]="this.customReports" (change)="$event ? enableCustomReports(item, $event) : null"> Send Orders - </mat-checkbox>
+								<mat-form-field>
+									<mat-label>PO L2722 VANNER</mat-label>
+									<mat-select name="custom-reports" [disabled]="!userPermissions">
+										<mat-option [value]="0">PO L2722 VANNER</mat-option>
+										<mat-option [value]="1">PO_L2722_BARCODE2</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</section>
+							<mat-form-field>
+								<mat-label>Email Recipients</mat-label>
+								<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+							</mat-form-field>
+							<mat-form-field>
+								<mat-label>Email Subject</mat-label>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="receipt-transaction">
+				<legend>
+					Receipt Transaction
+				</legend>
+				<div class="form-group" >
+					<div class=" email-row" *ngIf="checkEmailStatus" style="margin: 15px">
+						<div *ngFor="let supplierEmail of item.supplierEmails; index as i" class="form-row">
+							<div class="form-row email-row"  *ngIf="supplierEmail.transactionType === 'RECEIPTS'" style="margin: 15px">
+								<div class="form-row">
+									<section>
+										<mat-checkbox [checked]="supplierEmail.enabled" (change)="$event ? disableEmails(supplierEmail) : null" name="toggle-{{i}}" >Send Receipts - {{supplierEmail.emailType}}</mat-checkbox>
+									</section>
+									<mat-form-field>
+										<mat-label>Email Recipients</mat-label>
+										<div class="invalid-email" *ngIf="(emailRecipientsNgModel.touched) && emailRecipientsNgModel.errors?.emailsInValid">enter a valid email separated by a comma</div>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+									</mat-form-field>
+									<mat-form-field>
+										<mat-label>Email Subject</mat-label>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="asn-transaction">
+				<legend>Advanced Shipment Notice Transaction</legend>
+				<div class="form-group" hidden>
+					<div class="form-row">
+						<span>
+							Receive EDI
+						</span>
+						<div>
+							<label>EDI Map: </label>
+							<mat-radio-group>
+								<mat-radio-button>Placeholder</mat-radio-button>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="edi-information">
+				<legend>EDI</legend>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Qualifier</mat-label>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>ID</mat-label>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Delivery Method</mat-label>
+							<mat-select [(ngModel)]="item.deliveryMethod" name="delivery-method"  [disabled]="!userPermissions" >
+								<mat-option value="EDI">EDI/INT</mat-option>
+								<mat-option value="GEIS">GXS</mat-option>
+								<mat-option value="ECG" >ECG (Avnet Only)</mat-option>
+								<mat-option value="EMEA">Avnet-EMEA</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-row">
+				<div class="actions" style="margin-bottom: 12px">
+					<button mat-stroked-button [routerLink]="'/pages/supplier'" type="button" color="warn"  style="margin-right: 12px">Back</button>
+					<span class="spacer"></span>
+					<button mat-raised-button type="submit" color="primary" [disabled]="!editForm.valid || saving || checkTransactions()">
+						Save
+					</button>
+				</div>
+			</div>
+		</form>
+		<ng-template #yesToNoQohTracking>
+			<h2>This change will delete the QOH value on all existing VMI part numbers.</h2>
+			<div>
+				<button mat-stroked-button type="button" color="warn" (click)="closeDialog()" style="margin-right: 12px">Back</button>
+				<button mat-raised-button type="button" color="primary" mat-dialog-close>Okay</button>
+			</div>
+		</ng-template>
+		<ng-template #noToYesQohTracking>
+			<h2>This change will enable QOH tracking on all existing VMI part numbers.</h2>
+			<p>All VMI parts will initially have QOH = 0.</p>
+			<div>
+				<button mat-stroked-button type="button" color="warn" (click)="closeDialog()" style="margin-right: 12px">Back</button>
+				<button mat-raised-button type="button" color="primary" mat-dialog-close>Okay</button>
+			</div>
+		</ng-template>
+	</ng-container>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																														<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																																																																																				<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																																																																																				<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																																																																																																																																										<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+<app-loading-indicator [loadedEntity]="item" message="Loading supplier details">
+	<ng-container *ngIf="item">
+		<h1>Supplier Details: {{ item.supplierCode ? item.supplierCode : item.supplierName }} - {{ item.supplierId }}</h1>
+		<form #editForm="ngForm" (ngSubmit)="save()">
+			<fieldset class="general">
+				<legend>General</legend>
+				<div class="field-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Supplier Name</mat-label>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Account Number</mat-label>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Address 1</mat-label>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Address 2</mat-label>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>City</mat-label>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>State/Province</mat-label>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Postal Code</mat-label>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Country</mat-label>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row" *ngIf="userPermissions">
+						<mat-form-field>
+							<mat-label>Supplier Rank</mat-label>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Supplier Alias</mat-label>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="contact">
+				<legend>Contact Information</legend>
+				<div class="field-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Name</mat-label>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Phone</mat-label>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Fax</mat-label>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Email</mat-label>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="notes">
+				<legend>Notes</legend>
+				<div class="form-row">
+					<mat-form-field appearance="outline">
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+					</mat-form-field>
+				</div>
+			</fieldset>
+			<fieldset class="operations">
+				<legend>Operations</legend>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Currency</mat-label>
+							<mat-select [(ngModel)]="item.currency" name="currency">
+								<mat-option *ngFor="let currency of currencyOptions" [value]="currency">{{ currency }}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Number of Decimals</mat-label>
+							<mat-select [(ngModel)]="item.decimals" name="decimals">
+								<mat-option [value]="4">4</mat-option>
+								<mat-option [value]="5">5</mat-option>
+								<mat-option [value]="6">6</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Days Late</mat-label>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row radio-group">
+						<label class="radio-label">Receiving Enabled: </label>
+						<mat-radio-group class="radio-buttons" [(ngModel)]="item.isReceiving" name="isReceiving" [disabled]="receivingOff()">
+							<mat-radio-button [value]="1" [checked]="item.isReceiving === 1">Yes</mat-radio-button>
+							<mat-radio-button [value]="0" [checked]="item.isReceiving === 0">No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row radio-group">
+						<label class="radio-label">Track QOH for Parts: </label>
+						<mat-radio-group class="radio-buttons" [(ngModel)]="item.isTrackQohVmiParts" name="isTrackQohVmiParts">
+							<mat-radio-button [value]="1" (change)="openDialog(noToYesQohTracking)" [checked]="item.isTrackQohVmiParts === 1">Yes</mat-radio-button>
+							<mat-radio-button [value]="0" (change)="openDialog(yesToNoQohTracking)" [checked]="item.isTrackQohVmiParts === 0">No</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Order Qty is Not Multiple of MPQ</mat-label>
+							<mat-select [(ngModel)]="item.mpqRule" name="mpqRule">
+								<mat-option [value]="0">Ignore MPQ</mat-option>
+								<mat-option [value]="1">Round up to the nearest MPQ</mat-option>
+								<mat-option [value]="2">Round down to the nearest MPQ</mat-option>
+								<mat-option [value]="3">Prompt/Suspend</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Order Qty is Less than MOQ</mat-label>
+							<mat-select [(ngModel)]="item.moqRule" name="moqRule">
+								<mat-option [value]="0">Ignore MOQ</mat-option>
+								<mat-option [value]="1">Round up to MOQ</mat-option>
+								<mat-option [value]="2">Prompt/Suspend</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Receipt Qty is not Equal to Open Order Qty</mat-label>
+							<mat-select [(ngModel)]="item.recQtyWarning" name="recQtyWarning">
+								<mat-option [value]="0">Ignore Open Order Qty</mat-option>
+								<mat-option [value]="1">Prompt/Suspend if Receipt > Open</mat-option>
+								<mat-option [value]="2">Prompt/Suspend if Receipt <> Open</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="order-transaction">
+				<legend>
+					Order Transaction
+				</legend>
+				<div class="form-group" >
+					<div class="form-row order-edi-row"  style="margin: 15px">
+						<div class="form-row">
+							<section>
+								<mat-checkbox [disabled]="!userPermissions" [(ngModel)]="item.ediEnable" [checked]="item.ediEnable" (change)="$event ? enableEdi(item, $event) : null">Send Orders - EDI</mat-checkbox>
+							</section>
+							<mat-form-field>
+								<mat-label>EDI Map</mat-label>
+								<mat-select name="ediMap" [disabled]="!userPermissions" [(ngModel)]="item.ediMap" >
+									<mat-option value="NP850B">NP850B</mat-option>
+									<mat-option value="NP850QM">NP850QM</mat-option>
+									<mat-option value="NP850P4GM">850P4GM</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+					<div *ngFor="let supplierEmail of item.supplierEmails; index as i" class="form-row">
+						<div class="form-row email-row"  *ngIf="supplierEmail.transactionType === 'ORDERS'" style="margin: 15px">
+							<div class="form-row">
+								<section>
+									<mat-checkbox [checked]="supplierEmail.enabled" (change)="$event ? disableEmails(supplierEmail) : null" name="toggle-{{i}}" >Send Orders - {{supplierEmail.emailType}}</mat-checkbox>
+								</section>
+								<mat-form-field>
+									<mat-label>Email Recipients</mat-label>
+									<div class="invalid-email" *ngIf="(emailRecipientsNgModel.touched) && emailRecipientsNgModel.errors?.emailsInValid">enter a valid email separated by a comma</div>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+								</mat-form-field>
+								<mat-form-field>
+									<mat-label>Email Subject</mat-label>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<div class="form-row email-row"  style="margin: 15px">
+						<div class="form-row">
+							<section>
+								<mat-checkbox [checked]="this.customReports" (change)="$event ? enableCustomReports(item, $event) : null"> Send Orders - </mat-checkbox>
+								<mat-form-field>
+									<mat-label>PO L2722 VANNER</mat-label>
+									<mat-select name="custom-reports" [disabled]="!userPermissions">
+										<mat-option [value]="0">PO L2722 VANNER</mat-option>
+										<mat-option [value]="1">PO_L2722_BARCODE2</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</section>
+							<mat-form-field>
+								<mat-label>Email Recipients</mat-label>
+								<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+							</mat-form-field>
+							<mat-form-field>
+								<mat-label>Email Subject</mat-label>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="receipt-transaction">
+				<legend>
+					Receipt Transaction
+				</legend>
+				<div class="form-group" >
+					<div class=" email-row" *ngIf="checkEmailStatus" style="margin: 15px">
+						<div *ngFor="let supplierEmail of item.supplierEmails; index as i" class="form-row">
+							<div class="form-row email-row"  *ngIf="supplierEmail.transactionType === 'RECEIPTS'" style="margin: 15px">
+								<div class="form-row">
+									<section>
+										<mat-checkbox [checked]="supplierEmail.enabled" (change)="$event ? disableEmails(supplierEmail) : null" name="toggle-{{i}}" >Send Receipts - {{supplierEmail.emailType}}</mat-checkbox>
+									</section>
+									<mat-form-field>
+										<mat-label>Email Recipients</mat-label>
+										<div class="invalid-email" *ngIf="(emailRecipientsNgModel.touched) && emailRecipientsNgModel.errors?.emailsInValid">enter a valid email separated by a comma</div>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<mat-hint>Note: Separate multiple e-mail addresses with a comma (,).</mat-hint>
+									</mat-form-field>
+									<mat-form-field>
+										<mat-label>Email Subject</mat-label>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="asn-transaction">
+				<legend>Advanced Shipment Notice Transaction</legend>
+				<div class="form-group" hidden>
+					<div class="form-row">
+						<span>
+							Receive EDI
+						</span>
+						<div>
+							<label>EDI Map: </label>
+							<mat-radio-group>
+								<mat-radio-button>Placeholder</mat-radio-button>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="edi-information">
+				<legend>EDI</legend>
+				<div class="form-group">
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Qualifier</mat-label>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>ID</mat-label>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						</mat-form-field>
+					</div>
+					<div class="form-row">
+						<mat-form-field>
+							<mat-label>Delivery Method</mat-label>
+							<mat-select [(ngModel)]="item.deliveryMethod" name="delivery-method"  [disabled]="!userPermissions" >
+								<mat-option value="EDI">EDI/INT</mat-option>
+								<mat-option value="GEIS">GXS</mat-option>
+								<mat-option value="ECG" >ECG (Avnet Only)</mat-option>
+								<mat-option value="EMEA">Avnet-EMEA</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-row">
+				<div class="actions" style="margin-bottom: 12px">
+					<button mat-stroked-button [routerLink]="'/pages/supplier'" type="button" color="warn"  style="margin-right: 12px">Back</button>
+					<span class="spacer"></span>
+					<button mat-raised-button type="submit" color="primary" [disabled]="!editForm.valid || saving || checkTransactions()">
+						Save
+					</button>
+				</div>
+			</div>
+		</form>
+		<ng-template #yesToNoQohTracking>
+			<h2>This change will delete the QOH value on all existing VMI part numbers.</h2>
+			<div>
+				<button mat-stroked-button type="button" color="warn" (click)="closeDialog()" style="margin-right: 12px">Back</button>
+				<button mat-raised-button type="button" color="primary" mat-dialog-close>Okay</button>
+			</div>
+		</ng-template>
+		<ng-template #noToYesQohTracking>
+			<h2>This change will enable QOH tracking on all existing VMI part numbers.</h2>
+			<p>All VMI parts will initially have QOH = 0.</p>
+			<div>
+				<button mat-stroked-button type="button" color="warn" (click)="closeDialog()" style="margin-right: 12px">Back</button>
+				<button mat-raised-button type="button" color="primary" mat-dialog-close>Okay</button>
+			</div>
+		</ng-template>
+	</ng-container>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																																																																																				<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+</app-loading-indicator #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator  #supplierNameNgModel="ngModel" appInputTextValidator >							<input matInput [(ngModel)]="item.supplierName" name="supplier-name" required #supplierNameNgModel="ngModel" appInputTextValidator >
+																																																																																																																																										<mat-error class="error" *ngIf=supplierNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.accountNumber" name="account-number" #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator  #accountNumberNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=accountNumberNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address1" name="address-1" #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator  #address1NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address1NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.address2" name="address-2" #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator  #address2NgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=address2NgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.city" name="city" #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator  #cityNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=cityNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.state" name="state" #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator  #stateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=stateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.zip" name="zip" #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator  #zipNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=zipNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.country" name="country" #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator  #countryNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=countryNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierRank" name="supplier-rank" #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator  #supplierRankNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierRankNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.supplierAlias" name="supplier-alias" #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator  #supplierAliasNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=supplierAliasNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactName" name="contact-name" #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator  #contactNameNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactNameNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactPhone" name="contact-phone" #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator  #contactPhoneNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactPhoneNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.contactFax" name="contact-fax" #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator  #contactFaxNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactFaxNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="email" [(ngModel)]="item.contactEmail" name="contact-email" #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator  #contactEmailNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=contactEmailNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+						<textarea matInput [(ngModel)]="item.notes" name="notes" rows="4" maxlength="250" placeholder="Notes..." #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator  #notesNgModel="ngModel" appInputTextValidator ></textarea>
+					<mat-error class="error" *ngIf=notesNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput type="text" value="{{item.daysLate}}" [(ngModel)]="item.daysLate" name="days-late" required  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator  #daysLateNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=daysLateNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+									<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+								<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailRecipients" #emailRecipientsNgModel="ngModel" name="emailRecipients-{{i}}" required appEmailValidator #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator  #emailRecipientsNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailRecipientsNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+										<input matInput [disabled]="!supplierEmail.enabled" [(ngModel)]="supplierEmail.emailSubject" name="email-subject-{{i}}" #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator  #emailSubjectNgModel="ngModel" appInputTextValidator >
+									<mat-error class="error" *ngIf=emailSubjectNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediQualifier" name="edi-qualifier"  [disabled]="!userPermissions" / #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator  #ediQualifierNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediQualifierNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediId" name="edi-id"  [disabled]="!userPermissions" / #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator  #ediIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>
+							<input matInput [(ngModel)]="item.ediSecondaryId" name="edi-secondary-id"  [disabled]="!userPermissions" / #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator  #ediSecondaryIdNgModel="ngModel" appInputTextValidator >
+						<mat-error class="error" *ngIf=ediSecondaryIdNgModel.errors?.invalidInput"> Input contains EDI characters. Please do not use *,$,',", or ~ </mat-error>

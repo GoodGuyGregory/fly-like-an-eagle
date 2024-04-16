@@ -1,0 +1,62 @@
+<div class="custom-fields">
+    <div class="form-row" *ngIf="getCustomField('F1').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F1').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f1" name="f1-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F2').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F2').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f2" name="f2-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F3').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F3').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f3" name="f3-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F4').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F4').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f4" name="f4-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F5').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F5').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f5" name="f5-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F6').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F6').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f6" name="f6-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F7').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F7').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f7" name="f7-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F8').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F8').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f8" name="f8-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F9').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F9').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f9" name="f9-field" />
+        </mat-form-field>
+    </div>
+    <div class="form-row" *ngIf="getCustomField('F10').enabled">
+        <mat-form-field>
+            <mat-label>{{ getCustomField('F10').header }}</mat-label>
+            <input matInput [(ngModel)]="item.f10" name="f10-field" />
+        </mat-form-field>
+    </div>
+</div>
